@@ -1,0 +1,19 @@
+GET http://localhost:5070
+
+###Get all games
+GET http://localhost:5070/games
+
+###Get games by id
+GET http://localhost:5070/games/2
+
+###Create a game
+POST http://localhost:5070/games
+Content-Type: application/json
+X-HTTP-Method-Override: POST
+
+{
+  "name": "Game 1",
+  "genre": "Action",
+  "price": 100,
+  "releaseDate": "2021-01-01"
+}
