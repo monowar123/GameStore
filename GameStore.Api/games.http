@@ -22,7 +22,7 @@ PUT http://localhost:5070/games/2
 Content-Type: application/json
 
 {
-  "name": "Game 2",
+  "name": "Game 23",
   "genre": "Action",
   "price": 100,
   "releaseDate": "2021-01-01"

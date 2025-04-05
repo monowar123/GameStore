@@ -1,5 +1,6 @@
 using System;
 using GameStore.Api.DTOs;
+using MinimalApis.Extensions;
 
 namespace GameStore.Api.EndPoints;
 
@@ -14,13 +15,16 @@ public static class GamesEndPoints
         new(3, "FIFA 23", "Sports", 69.99M, new DateOnly(2022,9,27))
     };
 
-    public static WebApplication MapGamesEndPoints(this WebApplication app)
+    public static RouteGroupBuilder MapGamesEndPoints(this WebApplication app)
     {
+        var group = app.MapGroup("/games")
+                    .WithParameterValidation();
+
         //GET /games
-        app.MapGet("games", () => games);
+        group.MapGet("/", () => games);
 
         //GET /games/1
-        app.MapGet("games/{id}", (int id) =>
+        group.MapGet("/{id}", (int id) =>
         {
             var game = games.Find(game => game.Id == id);
 
@@ -28,9 +32,8 @@ public static class GamesEndPoints
         })
         .WithName(GetGameEndpointName);
 
-
         //POST /games
-        app.MapPost("games", (CreateGameDto newGame) =>
+        group.MapPost("/", (CreateGameDto newGame) =>
         {
             var game = new GameDto(games.Count + 1, newGame.Name, newGame.Genre, newGame.price, newGame.ReleaseDate);
             games.Add(game);
@@ -40,7 +43,7 @@ public static class GamesEndPoints
         });
 
         //PUT /games/1
-        app.MapPut("games/{id}", (int id, UpdateGameDto updatedGame) =>
+        group.MapPut("/{id}", (int id, UpdateGameDto updatedGame) =>
         {
             var game = games.Find(game => game.Id == id);
             if (game == null) return Results.NotFound();
@@ -59,7 +62,7 @@ public static class GamesEndPoints
         });
 
         //DELETE /games/1
-        app.MapDelete("games/{id}", (int id) =>
+        group.MapDelete("/{id}", (int id) =>
         {
             var game = games.Find(game => game.Id == id);
             if (game == null) return Results.NotFound();
@@ -69,6 +72,6 @@ public static class GamesEndPoints
             return Results.NoContent();
         });
 
-        return app;
+        return group;
     }
 }
