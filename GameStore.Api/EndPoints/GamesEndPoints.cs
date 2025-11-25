@@ -35,7 +35,13 @@ public static class GamesEndPoints
         //POST /games
         group.MapPost("/", (CreateGameDto newGame) =>
         {
-            var game = new GameDto(games.Count + 1, newGame.Name, newGame.Genre, newGame.price, newGame.ReleaseDate);
+            var game = new GameDto(
+                games.Count + 1,
+                newGame.Name,
+                newGame.Genre,
+                newGame.price,
+                newGame.ReleaseDate
+                );
             games.Add(game);
 
             //return game;
